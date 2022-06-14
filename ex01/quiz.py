@@ -6,12 +6,12 @@ quiz = {
     "タラオはカツオから見てどんな関係？":("甥","おい","甥っ子","おいっこ")
 }
 
-def syutudai():
+def generate():
     q, ans = random.choice(list(quiz.items()))
     return q ,ans
 
-def kaito():
-    q, ans = syutudai()
+def main():
+    q, ans = generate()
     print(f"問題:\n{q}")
     userans = input("答えるんだ:")
     if userans in ans:
@@ -20,5 +20,5 @@ def kaito():
         print("出直してこい")
 
 if __name__ == "__main__":
-    kaito()
+    main()
 
