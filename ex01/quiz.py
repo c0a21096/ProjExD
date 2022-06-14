@@ -7,13 +7,11 @@ quiz = {
 }
 
 def syutudai():
-    q = random.choice(quiz.keys())
-    ans = quiz[q]
+    q, ans = random.choice(list(quiz.items()))
     return q ,ans
 
 def kaito():
     q, ans = syutudai()
-    print(q, ans)
     print(f"問題:\n{q}")
     userans = input("答えるんだ:")
     if userans in ans:
