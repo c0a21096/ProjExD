@@ -1,1 +1,1 @@
-#git add ¨ commit ¨ push‚Ì—¬‚ê‚ª‘å–
+- git add ¨ commit ¨ push‚Ì—¬‚ê‚ª‘å–
