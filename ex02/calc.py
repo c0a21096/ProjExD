@@ -4,9 +4,9 @@ import tkinter.messagebox as tkm
 def button_click(event):
     btn = event.widget
     num =btn["text"]
-    tkm.showinfo("info", f"{num}が押されました")
+    entry.insert(tk.END, num)
 
-def main():
+if __name__ == "__main__":
     root = tk.Tk()
     #root.geometry("300x500")
     root.title("計算機")
@@ -28,6 +28,7 @@ def main():
             c=0
 
     entry = tk.Entry(
+            root, 
             justify="right",   
             width=10, 
             font=("Times New Roman", 40)
@@ -36,5 +37,4 @@ def main():
 
     root.mainloop()
 
-if __name__ == "__main__":
-    main()
+
