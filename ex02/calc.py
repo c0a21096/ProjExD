@@ -8,7 +8,7 @@ def button_click(event):
 
 def main():
     root = tk.Tk()
-    root.geometry("300x500")
+    #root.geometry("300x500")
     root.title("計算機")
 
     r, c = 0, 0
@@ -21,11 +21,18 @@ def main():
             font=("Times New Roman", 30)
             )
         button.bind("<1>", button_click)
-        button.grid(row=r, column=c)
+        button.grid(row=r+1, column=c)
         c+=1
         if (i-1)%3==0:
             r+=1
             c=0
+
+    entry = tk.Entry(
+            justify="right",   
+            width=10, 
+            font=("Times New Roman", 40)
+            )
+    entry.grid(columnspan=3, column=0, row=0)
 
     root.mainloop()
 
