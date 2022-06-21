@@ -1,21 +1,31 @@
 import tkinter as tk
+import tkinter.messagebox as tkm
 
+def button_click(event):
+    btn = event.widget
+    num =btn["text"]
+    tkm.showinfo("info", f"{num}が押されました")
 
 def main():
     root = tk.Tk()
-    root.title("計算機")
     root.geometry("300x500")
+    root.title("計算機")
 
-
-    button = tk.Button(
+    r, c = 0, 0
+    for i in range(9, -1, -1):
+        button = tk.Button(
             root, 
-            text=0, 
-            font=("Times New Roman", 30),
+            text=f"{i}", 
             height=2, 
             width=4,
+            font=("Times New Roman", 30)
             )
-    button.grid(row=0, column=0)
-    button.pack()
+        button.bind("<1>", button_click)
+        button.grid(row=r, column=c)
+        c+=1
+        if (i-1)%3==0:
+            r+=1
+            c=0
 
     root.mainloop()
 
