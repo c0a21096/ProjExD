@@ -43,7 +43,7 @@ def button_click(event):
     else:
         entry.insert(tk.END, num)
 
-def init_keys():
+def init_keys(): #初期化
     r, c = 0, 0 #行r、列c
     for i, num in enumerate([9, 8, 7, 6, 5, 4, 3, 2, 1, 0, "+", "-", "*", "/", "=", "C"]):
         button = tk.Button(
