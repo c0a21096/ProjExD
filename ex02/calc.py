@@ -10,6 +10,7 @@ BG = "white"
 
 def cfg_window(event): #cfg画面
     cfg = tk.Toplevel()
+    #cfg.geometry("200x200")
     exp = tk.Label(cfg, text="テーマを選択")
     exp.grid(row=0, column=0)
     for i, theme in enumerate(THEME_LIST):
@@ -43,7 +44,7 @@ def button_click(event):
     else:
         entry.insert(tk.END, num)
 
-def init_keys(): #初期化
+def init_keys():
     r, c = 0, 0 #行r、列c
     for i, num in enumerate([9, 8, 7, 6, 5, 4, 3, 2, 1, 0, "+", "-", "*", "/", "=", "C"]):
         button = tk.Button(
@@ -65,14 +66,14 @@ def init_keys(): #初期化
             text="Config", 
             height=1, 
             width=50,
-            font=("Times New Roman", 10),
-            bg=BG
+            font=("Times New Roman", 10)
             )
     cfgbutton.bind("<1>", cfg_window)
     cfgbutton.grid(row=r+1, column=c, columnspan=4)
 
 if __name__ == "__main__":
     root = tk.Tk()
+    #root.geometry("300x500")
     root.title("計算機")
 
     entry = tk.Entry(
