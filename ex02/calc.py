@@ -2,12 +2,10 @@
 追加機能:四則演算キー、初期化キー、キーボードの色変え機能
 """
 
-from sre_parse import expand_template
 import tkinter as tk
 import tkinter.messagebox as tkm
-from turtle import color
 
-THEME_LIST = ["Blue", "Red", "Default"]
+THEME_LIST = ['white', 'black', 'red', 'green', 'blue', 'cyan', 'yellow', 'magenta']
 BG = "white"
 
 def cfg_window(event): #cfg画面
@@ -24,18 +22,13 @@ def cfg_window(event): #cfg画面
             font=("Times New Roman", 20)
             )
         button.bind("<1>", cfg_btn_click)
-        button.grid(row=i, column=0)
+        button.grid(row=i+1, column=0)
 
-def cfg_btn_click(event):
+def cfg_btn_click(event): #cfgボタンイベント
     global BG
     btn = event.widget
     color = btn["text"]
-    if color == "Red":
-        BG = "red"
-    elif color == "Blue":
-        BG = "blue"
-    else:
-        BG = "white"
+    BG = color
     init_keys()
 
 def button_click(event):
@@ -68,7 +61,7 @@ def init_keys():
         if (i+1)%4==0:
             r+=1
             c=0
-        cfgbutton = tk.Button(
+    cfgbutton = tk.Button(
             root, 
             text="Config", 
             height=1, 
@@ -82,9 +75,6 @@ if __name__ == "__main__":
     root = tk.Tk()
     #root.geometry("300x500")
     root.title("計算機")
-    sub_win = None
-
-    init_keys()
 
     entry = tk.Entry(
             root, 
@@ -93,5 +83,6 @@ if __name__ == "__main__":
             font=("Times New Roman", 40)
             )
     entry.grid(columnspan=4, column=0, row=0)
+    init_keys()
 
     root.mainloop()
