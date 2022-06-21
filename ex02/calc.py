@@ -10,7 +10,6 @@ BG = "white"
 
 def cfg_window(event): #cfg画面
     cfg = tk.Toplevel()
-    #cfg.geometry("200x200")
     exp = tk.Label(cfg, text="テーマを選択")
     exp.grid(row=0, column=0)
     for i, theme in enumerate(THEME_LIST):
@@ -66,14 +65,14 @@ def init_keys():
             text="Config", 
             height=1, 
             width=50,
-            font=("Times New Roman", 10)
+            font=("Times New Roman", 10),
+            bg=BG
             )
     cfgbutton.bind("<1>", cfg_window)
     cfgbutton.grid(row=r+1, column=c, columnspan=4)
 
 if __name__ == "__main__":
     root = tk.Tk()
-    #root.geometry("300x500")
     root.title("計算機")
 
     entry = tk.Entry(
