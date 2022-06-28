@@ -11,15 +11,16 @@ def key_up(event):
     key = ""
 
 def main_proc():
-    global cx, cy
-    if key == "Up":
-        cy += -20
-    elif key == "Down":
-        cy += 20
-    elif key == "Left":
-        cx += -20
-    elif key == "Right":
-        cx += 20
+    global cx, cy, mx, my
+    if key == "Up" and maze[mx][my-1] == 0:
+        my += -1
+    elif key == "Down" and maze[mx][my+1] == 0:
+        my += 1
+    elif key == "Left" and maze[mx-1][my] == 0:
+        mx += -1
+    elif key == "Right" and maze[mx+1][my] == 0:
+        mx += 1
+    cx, cy = mx*100+50, my*100+50
     canvas.coords("koukaton", cx, cy)
     root.after(100, main_proc)
 
@@ -37,10 +38,11 @@ if __name__ == "__main__":
     canvas.pack()
 
     maze = maze_maker.make_maze(15, 9)
-    maze_maker.show_maze(canvas, maze)
+    maze_maker.show_maze(canvas, maze)#canvasにmazeを描画する
 
     koukaton = tk.PhotoImage(file="fig/0.png")
-    cx, cy = 300, 400
+    mx, my = 1, 1
+    cx, cy = mx*100+50, my*100+50
     canvas.create_image(cx, cy, image=koukaton, tag="koukaton")
     canvas.pack()
 
