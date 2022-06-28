@@ -1,5 +1,6 @@
 import tkinter as tk
 import tkinter.messagebox as tkm
+import maze_maker
 
 def key_down(event):
     global key
@@ -22,6 +23,7 @@ def main_proc():
     canvas.coords("koukaton", cx, cy)
     root.after(100, main_proc)
 
+#mainloop
 if __name__ == "__main__":
     root = tk.Tk()
     root.title("迷えるこうかとん")
