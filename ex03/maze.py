@@ -10,8 +10,19 @@ def key_up(event):
     global key
     key = ""
 
+def enemy_move():
+    global ecx, ecy, emx, emy
+    if maze[emy-1][emx] == 0:
+        emy += -1
+    elif maze[emy+1][emx] == 0:
+        emy += 1
+    elif maze[emy][emx-1] == 0:
+        emx += -1
+    elif maze[emy][emx+1] == 0:
+        emx += 1
+
 def main_proc():
-    global cx, cy, mx, my
+    global cx, cy, mx, my, is_goal, is_defeated
     if key == "Up" and maze[my-1][mx] == 0:
         my += -1
     elif key == "Down" and maze[my+1][mx] == 0:
@@ -22,7 +33,21 @@ def main_proc():
         mx += 1
     cx, cy = mx*100+50, my*100+50
     canvas.coords("koukaton", cx, cy)
-    root.after(100, main_proc)
+
+    enemy_move()
+    ecx, ecy = emx*100+50, emy*100+50
+    canvas.coords("enemy", ecx, ecy)
+    
+    #接触時の処理
+    if mx == gmx and my == gmy:
+        is_goal = True
+        canvas.create_text(750, 450, text="Clear", font=("Times New Roman", 200))
+    if mx == emx and my == emy:
+        is_defeated = True
+        canvas.create_text(750, 450, text="failed...", font=("Times New Roman", 200))
+
+    if not is_goal or not is_defeated:
+        root.after(100, main_proc)
 
 #mainloop
 if __name__ == "__main__":
@@ -37,6 +62,9 @@ if __name__ == "__main__":
         )
     canvas.pack()
 
+    is_goal = False
+    is_defeated = False
+
     maze = maze_maker.make_maze(15, 9)#[y軸][x軸]のリスト
     maze_maker.show_maze(canvas, maze)#canvasにmazeを描画する
 
@@ -44,6 +72,18 @@ if __name__ == "__main__":
     mx, my = 1, 1
     cx, cy = mx*100+50, my*100+50
     canvas.create_image(cx, cy, image=koukaton, tag="koukaton")
+    canvas.pack()
+
+    goal = tk.PhotoImage(file="fig/9.png")
+    gmx, gmy = 13, 7
+    gcx, gcy = gmx*100+50, gmy*100+50
+    canvas.create_image(gcx, gcy, image=goal, tag="goal")
+    canvas.pack()
+
+    enemy = tk.PhotoImage(file="fig/5.png")
+    emx, emy = 13, 1
+    ecx, ecy = emx*100+50, emy*100+50
+    canvas.create_image(ecx, ecy, image=enemy, tag="enemy")
     canvas.pack()
 
     key = ""
