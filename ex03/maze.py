@@ -1,5 +1,6 @@
 import tkinter as tk
 import tkinter.messagebox as tkm
+import random
 import maze_maker
 
 def key_down(event):
@@ -12,19 +13,15 @@ def key_up(event):
 
 def enemy_move():#enemyの行動パターン定義
     global ecx, ecy, emx, emy
-    dx = [-1, 0, 1, 0]
-    dy = [0, -1, 0, 1]
-    tmp = [ 
-        maze[emy][emx-1], 
-        maze[emy-1][emx], 
-        maze[emy][emx+1], 
-        maze[emy+1][emx]
-        ]#左上右下
-    for n, i in enumerate(tmp):
-        if i == 0:
-            emx += dx[n]
-            emy += dy[n]
-            break
+    tmp = random.randint(0, 3)
+    if tmp == 0 and maze[emy][emx+1] == 0:
+        emx += 1
+    elif tmp == 1 and maze[emy][emx-1] == 0:
+        emx -= 1
+    elif tmp == 2 and maze[emy+1][emx] == 0:
+        emy += 1
+    elif tmp == 3 and maze[emy-1][emx] == 0:
+        emy -= 1
 
 def main_proc():
     global cx, cy, mx, my, is_goal, is_defeated, is_move
