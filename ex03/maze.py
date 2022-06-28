@@ -10,33 +10,45 @@ def key_up(event):
     global key
     key = ""
 
-def enemy_move():
+def enemy_move():#enemyの行動パターン定義
     global ecx, ecy, emx, emy
-    if maze[emy-1][emx] == 0:
-        emy += -1
-    elif maze[emy+1][emx] == 0:
-        emy += 1
-    elif maze[emy][emx-1] == 0:
-        emx += -1
-    elif maze[emy][emx+1] == 0:
-        emx += 1
+    dx = [-1, 0, 1, 0]
+    dy = [0, -1, 0, 1]
+    tmp = [ 
+        maze[emy][emx-1], 
+        maze[emy-1][emx], 
+        maze[emy][emx+1], 
+        maze[emy+1][emx]
+        ]#左上右下
+    for n, i in enumerate(tmp):
+        if i == 0:
+            emx += dx[n]
+            emy += dy[n]
+            break
 
 def main_proc():
-    global cx, cy, mx, my, is_goal, is_defeated
+    global cx, cy, mx, my, is_goal, is_defeated, is_move
     if key == "Up" and maze[my-1][mx] == 0:
         my += -1
+        is_move = True
     elif key == "Down" and maze[my+1][mx] == 0:
         my += 1
+        is_move = True
     elif key == "Left" and maze[my][mx-1] == 0:
         mx += -1
+        is_move = True
     elif key == "Right" and maze[my][mx+1] == 0:
         mx += 1
+        is_move = True
     cx, cy = mx*100+50, my*100+50
     canvas.coords("koukaton", cx, cy)
 
-    enemy_move()
+    if is_move:
+        enemy_move()
     ecx, ecy = emx*100+50, emy*100+50
     canvas.coords("enemy", ecx, ecy)
+
+    is_move = False
     
     #接触時の処理
     if mx == gmx and my == gmy:
@@ -64,6 +76,7 @@ if __name__ == "__main__":
 
     is_goal = False
     is_defeated = False
+    is_move = False #自機が動いたかどうか
 
     maze = maze_maker.make_maze(15, 9)#[y軸][x軸]のリスト
     maze_maker.show_maze(canvas, maze)#canvasにmazeを描画する
