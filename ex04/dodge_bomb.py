@@ -32,6 +32,7 @@ def main():
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
+        
         key_states = pg.key.get_pressed()
         if key_states[pg.K_UP] == True:
             koukatonimg_rect.centery -= 1
@@ -59,6 +60,9 @@ def main():
         yoko, tate = check_bound(bombimg_rect, screen_rect)
         vx *= yoko
         vy *= tate
+
+        if koukatonimg_rect.colliderect(bombimg_rect):
+            return
 
         pg.display.update()
         clock.tick(1000)
