@@ -1,3 +1,4 @@
+import re
 import pygame as pg
 import sys
 import random
@@ -40,13 +41,37 @@ def main():
             koukatonimg_rect.centerx -= 1
         if key_states[pg.K_RIGHT] == True:
             koukatonimg_rect.centerx += 1
+        if check_bound(koukatonimg_rect, screen_rect) != (1, 1):
+            if key_states[pg.K_UP] == True:
+                koukatonimg_rect.centery += 1
+            if key_states[pg.K_DOWN] == True:
+                koukatonimg_rect.centery -= 1
+            if key_states[pg.K_LEFT] == True:
+                koukatonimg_rect.centerx += 1
+            if key_states[pg.K_RIGHT] == True:
+                koukatonimg_rect.centerx -= 1
 
         bombimg_rect.move_ip(vx, vy)
+
         screen_sfc.blit(bombimg_sfc, bombimg_rect)
-        
         screen_sfc.blit(koukatonimg_sfc, koukatonimg_rect)
+
+        yoko, tate = check_bound(bombimg_rect, screen_rect)
+        vx *= yoko
+        vy *= tate
+
         pg.display.update()
         clock.tick(1000)
+
+def check_bound(rect, scr_rect):
+    #[1]rct:こうかとん or bomb
+    #[2]scr_rect:スクリーンのrect
+    yoko, tate = +1, +1 #領域内かどうか
+    if rect.left < scr_rect.left or scr_rect.right < rect.right:
+        yoko = -1
+    if rect.top < scr_rect.top or scr_rect.bottom < rect.bottom:
+        tate = -1
+    return yoko, tate
 
 if __name__ == "__main__":
     pg.init()
