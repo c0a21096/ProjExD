@@ -18,11 +18,21 @@ def main():
 
     while True:
         screen_sfc.blit(bgimg_sfc, bgimg_rect)
-        screen_sfc.blit(koukatonimg_sfc, koukatonimg_rect)
         
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
+        key_states = pg.key.get_pressed()
+        if key_states[pg.K_UP] == True:
+            koukatonimg_rect.centery -= 10
+        if key_states[pg.K_DOWN] == True:
+            koukatonimg_rect.centery += 10
+        if key_states[pg.K_LEFT] == True:
+            koukatonimg_rect.centerx -= 1
+        if key_states[pg.K_RIGHT] == True:
+            koukatonimg_rect.centerx += 1
+        
+        screen_sfc.blit(koukatonimg_sfc, koukatonimg_rect)
         pg.display.update()
         clock.tick(1000)
 
