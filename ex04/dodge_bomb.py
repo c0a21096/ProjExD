@@ -1,4 +1,3 @@
-import re
 import pygame as pg
 import sys
 import random
@@ -8,6 +7,7 @@ def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen_sfc = pg.display.set_mode((1600, 900)) #surface
     screen_rect = screen_sfc.get_rect()
+    pl_life = 10
 
     bgimg_sfc = pg.image.load("fig/pg_bg.jpg")
     bgimg_rect = bgimg_sfc.get_rect()
@@ -21,10 +21,24 @@ def main():
     bombimg_sfc = pg.Surface((20, 20))
     bombimg_sfc.set_colorkey((0, 0, 0))
     pg.draw.circle(bombimg_sfc, (255, 0, 0), (10, 10), 10)
-    bombimg_rect = bombimg_sfc.get_rect()
-    bombimg_rect.centerx = random.randint(0, screen_rect.width)
-    bombimg_rect.centery = random.randint(0, screen_rect.height)
-    vx, vy = +1, +1
+    bomb_num = 100
+    bombimg_rect = [0]*bomb_num
+    vx = [0]*bomb_num
+    vy = [0]*bomb_num
+    for i in range(bomb_num):
+        bombimg_rect[i] = bombimg_sfc.get_rect()
+        bombimg_rect[i].centerx = random.randint(10, screen_rect.width-10)
+        bombimg_rect[i].centery = random.randint(10, screen_rect.height-10)
+        vx[i] = 1
+        vy[i] = 1
+
+    life_sfc = pg.Surface((20, 20))
+    life_sfc.set_colorkey((0, 0, 0))
+    pg.draw.circle(bombimg_sfc, (0, 255, 0), (10, 10), 10)
+    life_rect = [0]*pl_life
+    for i in range(pl_life):
+        life_rect[i] = life_sfc.get_rect()
+        life_rect[i].center = 10+i*10, 10
 
     while True:
         screen_sfc.blit(bgimg_sfc, bgimg_rect)
@@ -51,18 +65,26 @@ def main():
                 koukatonimg_rect.centerx += 1
             if key_states[pg.K_RIGHT] == True:
                 koukatonimg_rect.centerx -= 1
+        screen_sfc.blit(koukatonimg_sfc, koukatonimg_rect) 
 
-        bombimg_rect.move_ip(vx, vy)
+        for i in range(bomb_num):
+            yoko, tate = check_bound(bombimg_rect[i], screen_rect)
+            vx[i] *= yoko
+            vy[i] *= tate
+            bombimg_rect[i].move_ip(vx[i], vy[i])
+            screen_sfc.blit(bombimg_sfc, bombimg_rect[i])
+            
+            #if bombimg_rect[i].collidelist(bombimg_rect):
+            #    vx[i] *= -1
+            #    vy[i] *= -1
 
-        screen_sfc.blit(bombimg_sfc, bombimg_rect)
-        screen_sfc.blit(koukatonimg_sfc, koukatonimg_rect)
+        if koukatonimg_rect.collidelist(bombimg_rect):
+            pl_life -= 1
+        for i in range(pl_life):
+            screen_sfc.blit(life_sfc, life_rect[i])
 
-        yoko, tate = check_bound(bombimg_rect, screen_rect)
-        vx *= yoko
-        vy *= tate
-
-        if koukatonimg_rect.colliderect(bombimg_rect):
-            return
+        #if pl_life <= 0:
+            #return
 
         pg.display.update()
         clock.tick(1000)
