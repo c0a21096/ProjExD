@@ -7,7 +7,6 @@ def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen_sfc = pg.display.set_mode((1600, 900)) #surface
     screen_rect = screen_sfc.get_rect()
-    pl_life = 10
 
     bgimg_sfc = pg.image.load("fig/pg_bg.jpg")
     bgimg_rect = bgimg_sfc.get_rect()
@@ -21,7 +20,7 @@ def main():
     bombimg_sfc = pg.Surface((20, 20))
     bombimg_sfc.set_colorkey((0, 0, 0))
     pg.draw.circle(bombimg_sfc, (255, 0, 0), (10, 10), 10)
-    bomb_num = 100
+    bomb_num = 30
     bombimg_rect = [0]*bomb_num
     vx = [0]*bomb_num
     vy = [0]*bomb_num
@@ -34,11 +33,12 @@ def main():
 
     life_sfc = pg.Surface((20, 20))
     life_sfc.set_colorkey((0, 0, 0))
-    pg.draw.circle(bombimg_sfc, (0, 255, 0), (10, 10), 10)
+    pg.draw.circle(life_sfc, (0, 255, 0), (10, 10), 10)
+    pl_life = 1500
     life_rect = [0]*pl_life
     for i in range(pl_life):
         life_rect[i] = life_sfc.get_rect()
-        life_rect[i].center = 10+i*10, 10
+        life_rect[i].center = 10+i, 10
 
     while True:
         screen_sfc.blit(bgimg_sfc, bgimg_rect)
@@ -73,18 +73,15 @@ def main():
             vy[i] *= tate
             bombimg_rect[i].move_ip(vx[i], vy[i])
             screen_sfc.blit(bombimg_sfc, bombimg_rect[i])
-            
-            #if bombimg_rect[i].collidelist(bombimg_rect):
-            #    vx[i] *= -1
-            #    vy[i] *= -1
 
-        if koukatonimg_rect.collidelist(bombimg_rect):
-            pl_life -= 1
+        for i in range(bomb_num):    
+            if koukatonimg_rect.colliderect(bombimg_rect[i]):
+                pl_life -= 1
         for i in range(pl_life):
             screen_sfc.blit(life_sfc, life_rect[i])
 
-        #if pl_life <= 0:
-            #return
+        if pl_life <= 0:
+            return
 
         pg.display.update()
         clock.tick(1000)
