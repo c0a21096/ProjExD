@@ -1,5 +1,6 @@
 import pygame as pg
 import sys
+import random
 
 def main():
     clock = pg.time.Clock()
@@ -16,6 +17,13 @@ def main():
     koukatonimg_rect = koukatonimg_sfc.get_rect()
     koukatonimg_rect.center = 900, 400
 
+    bombimg_sfc = pg.Surface((20, 20))
+    bombimg_sfc.set_colorkey((0, 0, 0))
+    pg.draw.circle(bombimg_sfc, (255, 0, 0), (10, 10), 10)
+    bombimg_rect = bombimg_sfc.get_rect()
+    bombimg_rect.centerx = random.randint(0, screen_rect.width)
+    bombimg_rect.centery = random.randint(0, screen_rect.height)
+
     while True:
         screen_sfc.blit(bgimg_sfc, bgimg_rect)
         
@@ -24,15 +32,16 @@ def main():
                 return
         key_states = pg.key.get_pressed()
         if key_states[pg.K_UP] == True:
-            koukatonimg_rect.centery -= 10
+            koukatonimg_rect.centery -= 1
         if key_states[pg.K_DOWN] == True:
-            koukatonimg_rect.centery += 10
+            koukatonimg_rect.centery += 1
         if key_states[pg.K_LEFT] == True:
             koukatonimg_rect.centerx -= 1
         if key_states[pg.K_RIGHT] == True:
             koukatonimg_rect.centerx += 1
         
         screen_sfc.blit(koukatonimg_sfc, koukatonimg_rect)
+        screen_sfc.blit(bombimg_sfc, bombimg_rect)
         pg.display.update()
         clock.tick(1000)
 
