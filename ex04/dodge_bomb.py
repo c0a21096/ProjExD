@@ -23,6 +23,7 @@ def main():
     bombimg_rect = bombimg_sfc.get_rect()
     bombimg_rect.centerx = random.randint(0, screen_rect.width)
     bombimg_rect.centery = random.randint(0, screen_rect.height)
+    vx, vy = +1, +1
 
     while True:
         screen_sfc.blit(bgimg_sfc, bgimg_rect)
@@ -39,9 +40,11 @@ def main():
             koukatonimg_rect.centerx -= 1
         if key_states[pg.K_RIGHT] == True:
             koukatonimg_rect.centerx += 1
+
+        bombimg_rect.move_ip(vx, vy)
+        screen_sfc.blit(bombimg_sfc, bombimg_rect)
         
         screen_sfc.blit(koukatonimg_sfc, koukatonimg_rect)
-        screen_sfc.blit(bombimg_sfc, bombimg_rect)
         pg.display.update()
         clock.tick(1000)
 
