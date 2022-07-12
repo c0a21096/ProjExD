@@ -51,6 +51,9 @@ class Bird:
                 self.rct.centerx -= 1
         self.blit(scr)
 
+    def attack(self):
+        return Shot(self, "fig/beam.png", 0.2)
+
 
 class Bomb:
     def __init__(self, color, size, vxy, scr):
@@ -73,20 +76,49 @@ class Bomb:
         self.blit(scr)
         
 
+class Shot:
+    def __init__(self, chr:Bird, image, size):
+        self.sfc = pg.image.load(image)    # Surface
+        self.sfc = pg.transform.rotozoom(self.sfc, 0, size)  # Surface
+        self.rct = self.sfc.get_rect()     # Rect
+        self.rct.midleft = chr.rct.center
+
+    def blit(self, scr):
+        scr.sfc.blit(self.sfc, self.rct)
+
+    def update(self, scr):
+        self.rct.move_ip(5, 0)
+        self.blit(scr)
+        if check_bound(self.rct, scr.rct) != (1, 1): # 領域外だったら
+            del self
+
+
 def main():
     clock = pg.time.Clock()
     scr = Screen("負けるな！こうかとん", (1600, 900), "fig/pg_bg.jpg")
     kkt = Bird("fig/6.png", 2.0, (900, 400))
     bkd = Bomb((255, 0, 0), 10, (1, 1), scr)
+    beam = None
+    beams = []
 
     while True:
         scr.blit()
 
         for event in pg.event.get():
-            if event.type == pg.QUIT: return
-
+            if event.type == pg.QUIT:
+                return
+            if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
+                beams.append(kkt.attack())
+  
         kkt.update(scr)
         bkd.update(scr)
+        if len(beams) != 0:
+            for beam in beams:
+                beam.update(scr)
+
+        # for beam in beams:
+        #     if beam.rct.colliderect(bkd.rct):
+        #          del bkd 
         if kkt.rct.colliderect(bkd.rct):
             return 
 
@@ -94,7 +126,6 @@ def main():
         clock.tick(1000)
 
 
-# 練習7
 def check_bound(rct, scr_rct):
     '''
     [1] rct: こうかとん or 爆弾のRect
@@ -104,7 +135,6 @@ def check_bound(rct, scr_rct):
     if rct.left < scr_rct.left or scr_rct.right  < rct.right : yoko = -1 # 領域外
     if rct.top  < scr_rct.top  or scr_rct.bottom < rct.bottom: tate = -1 # 領域外
     return yoko, tate
-
 
 
 if __name__ == "__main__":
