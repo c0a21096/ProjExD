@@ -97,9 +97,12 @@ def main():
     clock = pg.time.Clock()
     scr = Screen("負けるな！こうかとん", (1600, 900), "fig/pg_bg.jpg")
     kkt = Bird("fig/6.png", 2.0, (900, 400))
-    bkd = Bomb((255, 0, 0), 10, (1, 1), scr)
     beam = None
     beams = []
+    bkd_num = 3
+    bkds = [0]*bkd_num
+    for i in range(bkd_num):
+        bkds[i] = Bomb((255, 0, 0), 10, (i+1, i+1), scr)
 
     while True:
         scr.blit()
@@ -111,17 +114,20 @@ def main():
                 beams.append(kkt.attack())
   
         kkt.update(scr)
-        bkd.update(scr)
+        for bkd in bkds:
+            bkd.update(scr)
         if len(beams) != 0:
             for beam in beams:
-                beam.update(scr)
+                beam.update(scr) 
 
-        # for beam in beams:
-        #     if beam.rct.colliderect(bkd.rct):
-        #          del bkd 
-        if kkt.rct.colliderect(bkd.rct):
-            return 
-
+        for beam in beams:
+            for i in range(len(bkds)):
+                if beam.rct.colliderect(bkds[i].rct):
+                    bkds[i] = 0
+        # for i in bkds:
+        #     if  kkt.rct.colliderect(i.rct):
+        #         return 
+ 
         pg.display.update()
         clock.tick(1000)
 
