@@ -135,7 +135,7 @@ if __name__ == "__main__": #main
                 bullets[i].update(screen)
             for bullet in bullets:
                 if bullet.rct.top <= 0:
-                    del bullet    
+                    del bullet       
         for enemy in enemys:
             enemy.update(screen)
         
@@ -143,8 +143,8 @@ if __name__ == "__main__": #main
         for bullet in bullets:
             for enemy in enemys:
                 if bullet.rct.colliderect(enemy.rct):
-                    del bullet
-                    del enemy
-                    break
+                    bullets.remove(bullet)
+                    enemys.remove(enemy)
+                    #break
 
         pg.display.update()
